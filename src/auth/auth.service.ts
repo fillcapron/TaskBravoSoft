@@ -12,8 +12,12 @@ export class AuthService {
     constructor(private userService: UsersService, private jwtService: JwtService) { }
 
     async login(userDto: CreateUserDto) {
-        const user = await this.validateUser(userDto);
-        return this.generateToken(user);
+        try {
+            const user = await this.validateUser(userDto);
+            return this.generateToken(user);
+        } catch (e) {
+            throw new UnauthorizedException({ message: 'Некорректный email или пароль' });
+        }
     }
 
     async registration(userDto: CreateUserDto) {
