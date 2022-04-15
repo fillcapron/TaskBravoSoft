@@ -9,8 +9,12 @@ export class EmployeeService {
     constructor(@InjectModel(Employee) private employeeRepository: typeof Employee) { }
 
     async createEmployee(dto: CreateEmployeeDto) {
-        const employee = await this.employeeRepository.create(dto);
-        return employee;
+        try {
+            const employee = await this.employeeRepository.create(dto);
+            return employee;
+        } catch (e) {
+            throw new HttpException('Ошибка создания сотрудника', HttpStatus.BAD_REQUEST);
+        }
     }
 
     async getAllEmployee() {
@@ -34,7 +38,7 @@ export class EmployeeService {
     async deleteEmployee(id: number) {
         try {
             const deleteEmployee = await this.employeeRepository.destroy({ where: { id } });
-            return {message: `Сотрудник ${deleteEmployee} удален`};
+            return { message: `Сотрудник ${deleteEmployee} удален` };
         } catch (e) {
             throw new HttpException('Ошибка удаления сотрудника', HttpStatus.INTERNAL_SERVER_ERROR);
         }
