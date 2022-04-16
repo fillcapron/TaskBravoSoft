@@ -5,29 +5,29 @@ import { EmployeeService } from './employee.service';
 
 @Controller('employee')
 export class EmployeeController {
-    constructor(private employeeService: EmployeeService){ }
+    constructor(private employeeService: EmployeeService) { }
 
     @UseGuards(JwtGuards)
     @Get()
-    getAll(){
+    getAll() {
         return this.employeeService.getAllEmployee();
     }
 
     @UseGuards(JwtGuards)
     @Post()
-    create(@Body() employeeDto: CreateEmployeeDto){
+    create(@Body() employeeDto: CreateEmployeeDto) {
         return this.employeeService.createEmployee(employeeDto);
     }
 
     @UseGuards(JwtGuards)
     @Patch()
-    update(@Body() employeeDto: CreateEmployeeDto){
+    update(@Body() employeeDto: CreateEmployeeDto) {
         return this.employeeService.updateEmployee(employeeDto);
     }
 
     @UseGuards(JwtGuards)
-    @Delete('id')
-    delete(@Param() id: number){
-        return this.employeeService.deleteEmployee(id);
+    @Post('/delete')
+    delete(@Body() dto: { ids: number[] }) {
+        return this.employeeService.deleteEmployee(dto.ids);
     }
 }
