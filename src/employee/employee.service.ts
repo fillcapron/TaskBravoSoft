@@ -27,12 +27,10 @@ export class EmployeeService {
         try {
             const id = dto.id;
             if (id) {
-                console.log(dto)
                 const updateEmployee = await this.employeeRepository.update(dto, { where: { id } });
                 return { message: `Сотрудник c id = ${updateEmployee} обновлен` };
             }
         } catch (e) {
-            console.log(e)
             throw new HttpException('Ошибка обновления сотрудника', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
